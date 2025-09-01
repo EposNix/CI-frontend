@@ -230,109 +230,108 @@ const App: React.FC = () => {
   const isShareSupported = typeof navigator.share === 'function' && typeof navigator.canShare === 'function';
   const isReady = selfie && (location || (locationInputMode === 'prompt' && locationPrompt.trim() !== ''));
   const remainingGenerations = user.remainingGenerations;
-
   return (
-    <div className="min-h-screen bg-gray-900 text-white font-sans flex flex-col items-center p-4 sm:p-6 md:p-8 relative overflow-x-hidden">
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 via-gray-900 to-fuchsia-900/40 z-0"></div>
-      <div className="w-full max-w-5xl mx-auto z-10">
+    <div className="min-h-screen bg-gray-900 text-white font-sans relative overflow-x-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-900 to-fuchsia-900/40"></div>
 
-        <header className="flex justify-between items-center my-4 sm:my-6 md:my-8 text-center w-full">
-            <div className="flex-1"></div>
-            <div className="flex-1">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-cyan-400">
-                    Couch Influencer
-                </h1>
-                <p className="mt-2 text-sm sm:text-base md:text-lg text-gray-400 max-w-2xl mx-auto px-4">
-                    Create your dream travel photos without leaving home.
-                </p>
-            </div>
-            <div className="flex-1 flex justify-end items-center gap-4">
-                <img src={user.picture} alt={user.name} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-fuchsia-500/50" referrerPolicy="no-referrer" />
-                <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-fuchsia-500 rounded-lg p-2"
-                    aria-label="Logout"
-                >
-                    <LogoutIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                    <span className="hidden sm:inline">Logout</span>
-                </button>
-            </div>
-        </header>
+      <header className="sticky top-0 z-20 backdrop-blur bg-gray-900/80 border-b border-gray-800">
+        <div className="max-w-5xl mx-auto flex items-center justify-between p-4 sm:p-6">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-cyan-400">
+            Couch Influencer
+          </h1>
+          <div className="flex items-center gap-4">
+            <img src={user.picture} alt={user.name} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-fuchsia-500/50" referrerPolicy="no-referrer" />
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-fuchsia-500 rounded-lg p-2"
+              aria-label="Logout"
+            >
+              <LogoutIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+              <span className="hidden sm:inline">Logout</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 md:px-8 pb-8">
+        <p className="text-center mt-6 mb-8 text-sm sm:text-base md:text-lg text-gray-400">
+          Create your dream travel photos without leaving home.
+        </p>
 
         {/* Credits Display */}
         <div className={`backdrop-blur-sm border rounded-xl p-4 mb-6 flex justify-between items-center transition-all duration-300 ${
-            remainingGenerations === 0 
-                ? 'bg-red-900/20 border-red-500/50 shadow-lg shadow-red-500/10' 
-                : remainingGenerations <= 2 
-                    ? 'bg-amber-900/20 border-amber-500/50 shadow-lg shadow-amber-500/10' 
+            remainingGenerations === 0
+                ? 'bg-red-900/20 border-red-500/50 shadow-lg shadow-red-500/10'
+                : remainingGenerations <= 2
+                    ? 'bg-amber-900/20 border-amber-500/50 shadow-lg shadow-amber-500/10'
                     : 'bg-gray-800/30 border-gray-700/50'
         }`}>
-            <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-full ${
-                    remainingGenerations === 0 
-                        ? 'bg-red-500/20' 
-                        : remainingGenerations <= 2 
-                            ? 'bg-amber-500/20' 
-                            : 'bg-fuchsia-500/20'
-                }`}>
-                    <SparklesIcon className={`w-6 h-6 ${
-                        remainingGenerations === 0 
-                            ? 'text-red-400' 
-                            : remainingGenerations <= 2 
-                                ? 'text-amber-400' 
-                                : 'text-fuchsia-400'
-                    }`} />
-                </div>
-                <div>
-                    <span className="text-lg font-semibold text-white">
-                        {remainingGenerations} generation{remainingGenerations === 1 ? '' : 's'} remaining
-                    </span>
-                    {remainingGenerations === 0 && (
-                        <p className="text-sm text-red-300">Get more to continue creating!</p>
-                    )}
-                    {remainingGenerations > 0 && remainingGenerations <= 2 && (
-                        <p className="text-sm text-amber-300">Running low! Consider getting more.</p>
-                    )}
-                    {remainingGenerations > 2 && (
-                        <p className="text-sm text-gray-400">Ready to create amazing photos!</p>
-                    )}
-                </div>
+          <div className="flex items-center gap-3">
+            <div className={`p-2 rounded-full ${
+                remainingGenerations === 0
+                    ? 'bg-red-500/20'
+                    : remainingGenerations <= 2
+                        ? 'bg-amber-500/20'
+                        : 'bg-fuchsia-500/20'
+            }`}>
+              <SparklesIcon className={`w-6 h-6 ${
+                  remainingGenerations === 0
+                      ? 'text-red-400'
+                      : remainingGenerations <= 2
+                          ? 'text-amber-400'
+                          : 'text-fuchsia-400'
+              }`} />
             </div>
-            <button
-                onClick={() => setShowPaywallModal(true)}
-                className={`flex items-center gap-2 font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 text-sm ${
-                    remainingGenerations === 0 
-                        ? 'bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white animate-pulse' 
-                        : 'bg-gradient-to-r from-fuchsia-600 to-blue-600 hover:from-fuchsia-500 hover:to-blue-500 text-white'
-                }`}
-            >
-                <SparklesIcon className="w-4 h-4" />
-                <span>{remainingGenerations === 0 ? 'Get Credits' : 'Buy More Credits'}</span>
-            </button>
+            <div>
+              <span className="text-lg font-semibold text-white">
+                {remainingGenerations} generation{remainingGenerations === 1 ? '' : 's'} remaining
+              </span>
+              {remainingGenerations === 0 && (
+                <p className="text-sm text-red-300">Get more to continue creating!</p>
+              )}
+              {remainingGenerations > 0 && remainingGenerations <= 2 && (
+                <p className="text-sm text-amber-300">Running low! Consider getting more.</p>
+              )}
+              {remainingGenerations > 2 && (
+                <p className="text-sm text-gray-400">Ready to create amazing photos!</p>
+              )}
+            </div>
+          </div>
+          <button
+            onClick={() => setShowPaywallModal(true)}
+            className={`flex items-center gap-2 font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 text-sm ${
+                remainingGenerations === 0
+                    ? 'bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white animate-pulse'
+                    : 'bg-gradient-to-r from-fuchsia-600 to-blue-600 hover:from-fuchsia-500 hover:to-blue-500 text-white'
+            }`}
+          >
+            <SparklesIcon className="w-4 h-4" />
+            <span>{remainingGenerations === 0 ? 'Get Credits' : 'Buy More Credits'}</span>
+          </button>
         </div>
 
-        <main className="bg-gray-800/50 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-2xl shadow-black/30 p-6 sm:p-8">
+        <div className="bg-gray-800/50 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-2xl shadow-black/30 p-6 sm:p-8">
           {loading && <LoadingOverlay />}
-          
+
           {!resultImage ? (
              <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-8 max-w-2xl mx-auto w-full">
                     <div>
                         <div className="flex justify-center items-center gap-2 mb-4">
                             <h3 className="text-xl font-semibold text-gray-200">1. Upload Your Selfie</h3>
-                            <button 
-                                onClick={() => setShowHelpModal(true)} 
-                                className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-fuchsia-500 rounded-full" 
+                            <button
+                                onClick={() => setShowHelpModal(true)}
+                                className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-fuchsia-500 rounded-full"
                                 aria-label="Selfie tips"
                             >
                                 <QuestionMarkCircleIcon className="w-6 h-6 text-gray-400 hover:text-fuchsia-400 transition-colors"/>
                             </button>
                         </div>
-                        <ImageUploader 
+                        <ImageUploader
                             title=""
-                            icon={<UserIcon className="w-full h-full text-gray-600"/>} 
-                            onImageSelect={handleSelfieSelect} 
-                            imageData={selfie} 
+                            icon={<UserIcon className="w-full h-full text-gray-600"/>}
+                            onImageSelect={handleSelfieSelect}
+                            imageData={selfie}
                         />
                     </div>
                     <div className="w-full flex flex-col">
@@ -355,11 +354,11 @@ const App: React.FC = () => {
                         </div>
                         <div className="flex-grow">
                         {locationInputMode === 'upload' ? (
-                            <ImageUploader 
+                            <ImageUploader
                                 title=""
-                                icon={<LocationIcon className="w-16 h-16 text-gray-600" />} 
-                                onImageSelect={handleLocationSelect} 
-                                imageData={location} 
+                                icon={<LocationIcon className="w-16 h-16 text-gray-600" />}
+                                onImageSelect={handleLocationSelect}
+                                imageData={location}
                             />
                         ) : (
                             <textarea
@@ -373,7 +372,7 @@ const App: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 {error && <div className="text-center bg-red-500/20 border border-red-500 text-red-300 p-3 rounded-lg">{error}</div>}
 
                 <div className="mt-4 flex flex-col items-center gap-3">
@@ -428,13 +427,15 @@ const App: React.FC = () => {
                 </div>
             </div>
           )}
-        </main>
-         <footer className="text-center py-8 text-gray-500">
-            <p>Powered by Gemini AI</p>
-        </footer>
-      </div>
+        </div>
+      </main>
+
+      <footer className="relative z-10 text-center py-8 text-gray-500">
+        <p>Powered by Gemini AI</p>
+      </footer>
+
       <HelpModal show={showHelpModal} onClose={() => setShowHelpModal(false)} />
-      <PaywallModal 
+      <PaywallModal
         show={showPaywallModal}
         onClose={() => setShowPaywallModal(false)}
         onPay={handlePayment}
